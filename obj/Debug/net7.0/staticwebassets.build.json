@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "PyYg1j1gGe9b0MUdmpISYJxSwpVAd/wrmNHagvpYg+8=",
+  "Source": "DriverAuth.Api",
+  "BasePath": "_content/DriverAuth.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
