@@ -1,4 +1,5 @@
 using DriverAuth.Api.Configurations;
+using DriverAuth.Api.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -18,5 +19,24 @@ public class AuthManagementController: ControllerBase
         _logger = logger;
         _userManager = userManager;
         _jwtConfig = optionsMonitor.CurrentValue;
+    }
+
+    [HttpPost]
+    [Route("Register")]
+    public async Task<IActionResult> Register([FromBody] UserRegistrationRequestDto requestDto)
+    {
+        if (ModelState.IsValid)
+        {
+            //check if email exists in database
+            var emailExist = await _userManager.FindByEmailAsync(requestDto.Email);
+            if (emailExist != null)
+                return BadRequest("Email already exists");
+            var newUser = new IdentityUser()
+            {
+                Email = requestDto.Email;
+            }
+        }
+
+        return BadRequest("Invalid request payload");
     }
 }
