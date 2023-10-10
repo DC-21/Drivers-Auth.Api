@@ -44,11 +44,12 @@ public class AuthManagementController: ControllerBase
             var isCreated = await _userManager.CreateAsync(newUser, requestDto.Password);
             if (isCreated.Succeeded)
             {
+                var token = GenerateJwtToken(newUser);
                 //generate token
                 return Ok(new RegisterRequestResponse()
                 {
                     Result = true,
-                    Token = ""
+                    Token = token
                 });
             }
 
