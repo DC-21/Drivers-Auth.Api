@@ -75,5 +75,7 @@ public class AuthManagementController: ControllerBase
                 SecurityAlgorithms.HmacSha512)
         };
         var token = jwtTokenHandler.CreateToken(tokenDescriptor);
+        var jwtToken = jwtTokenHandler.WriteToken(token);
+        return jwtToken;
     }
 }
