@@ -1,8 +1,11 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using DriverAuth.Api.Configurations;
 using DriverAuth.Api.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DriverAuth.Api.Controllers;
 
@@ -31,7 +34,7 @@ public class AuthManagementController: ControllerBase
             var emailExist = await _userManager.FindByEmailAsync(requestDto.Email);
             if (emailExist != null)
                 return BadRequest("Email already exists");
-            //ceate new user now
+            //create new user now
             var newUser = new IdentityUser()
             {
                 Email = requestDto.Email
@@ -51,5 +54,15 @@ public class AuthManagementController: ControllerBase
         }
 
         return BadRequest("Invalid request payload");
+    }
+
+    private string GenerateJwtToken(IdentityUser user)
+    {
+        var jwtTokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
+        var tokenDescriptor = new SecurityTokenDescriptor()
+        {
+            
+        };
     }
 }
