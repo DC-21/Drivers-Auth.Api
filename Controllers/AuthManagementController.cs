@@ -31,6 +31,7 @@ public class AuthManagementController: ControllerBase
             var emailExist = await _userManager.FindByEmailAsync(requestDto.Email);
             if (emailExist != null)
                 return BadRequest("Email already exists");
+            //ceate new user now
             var newUser = new IdentityUser()
             {
                 Email = requestDto.Email
