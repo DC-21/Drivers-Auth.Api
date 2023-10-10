@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using DriverAuth.Api.Configurations;
 using DriverAuth.Api.Models.DTOs;
@@ -62,7 +63,13 @@ public class AuthManagementController: ControllerBase
         var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor()
         {
-            
+            Subject = new ClaimsIdentity(new []
+            {
+                new Claim("Id", user.Id),
+                new Claim(JwtRegisteredClaimNames.Sub,user.Email),
+                new Claim(JwtRegisteredClaimNames.Email,user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
+            })
         };
     }
 }
