@@ -38,7 +38,8 @@ public class AuthManagementController: ControllerBase
             //create new user now
             var newUser = new IdentityUser()
             {
-                Email = requestDto.Email
+                Email = requestDto.Email,
+                UserName = requestDto.Email
             };
             var isCreated = await _userManager.CreateAsync(newUser, requestDto.Password);
             if (isCreated.Succeeded)
@@ -51,7 +52,7 @@ public class AuthManagementController: ControllerBase
                 });
             }
 
-            return BadRequest("error creating the user, please try again later");
+            return BadRequest(isCreated.Errors.Select(x=>x.Description).ToList());
         }
 
         return BadRequest("Invalid request payload");
