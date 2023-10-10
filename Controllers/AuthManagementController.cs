@@ -33,8 +33,20 @@ public class AuthManagementController: ControllerBase
                 return BadRequest("Email already exists");
             var newUser = new IdentityUser()
             {
-                Email = requestDto.Email;
+                Email = requestDto.Email
+            };
+            var isCreated = await _userManager.CreateAsync(newUser, requestDto.Password);
+            if (isCreated.Succeeded)
+            {
+                //generate token
+                return Ok(new RegisterRequestResponse()
+                {
+                    Result = true,
+                    Token = ""
+                });
             }
+
+            return BadRequest("error creating the user, please try again later");
         }
 
         return BadRequest("Invalid request payload");
