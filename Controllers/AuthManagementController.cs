@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using DriverAuth.Api.Configurations;
 using DriverAuth.Api.Models.DTOs;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -56,6 +57,25 @@ public class AuthManagementController: ControllerBase
             return BadRequest(isCreated.Errors.Select(x=>x.Description).ToList());
         }
 
+        return BadRequest("Invalid request payload");
+    }
+
+    [HttpPost]
+    [Route("Login")]
+    public async Task<IActionResult> Login([FromBody] UserLoginRequestDto requestDto)
+    {
+        if (ModelState.IsValid)
+        {
+            var exisistingUser = await _userManager.FindByEmailAsync(requestDto.Email);
+            if (exisistingUser == null)
+                return BadRequest("Invalid authentication");
+            var isPasswordValid = await _userManager.CheckPasswordAsync(exisistingUser, requestDto.Password);
+            if (isPasswordValid)
+            {
+                var token = GenerateJwtToken(exisistingUser);
+                return Ok
+            }
+        }
         return BadRequest("Invalid request payload");
     }
 
