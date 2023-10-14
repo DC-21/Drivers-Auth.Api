@@ -66,13 +66,13 @@ public class AuthManagementController: ControllerBase
     {
         if (ModelState.IsValid)
         {
-            var exisistingUser = await _userManager.FindByEmailAsync(requestDto.Email);
-            if (exisistingUser == null)
+            var existingUser = await _userManager.FindByEmailAsync(requestDto.Email);
+            if (existingUser == null)
                 return BadRequest("Invalid authentication");
-            var isPasswordValid = await _userManager.CheckPasswordAsync(exisistingUser, requestDto.Password);
+            var isPasswordValid = await _userManager.CheckPasswordAsync(existingUser, requestDto.Password);
             if (isPasswordValid)
             {
-                var token = GenerateJwtToken(exisistingUser);
+                var token = GenerateJwtToken(existingUser);
                 return Ok(new LoginRequestResponse()
                 {
                     Token = token,
@@ -80,7 +80,7 @@ public class AuthManagementController: ControllerBase
                 });
             }
         }
-        return BadRequest("Invalid authenticationc");
+        return BadRequest("Invalid authentication");
     }
 
     private string GenerateJwtToken(IdentityUser user)
