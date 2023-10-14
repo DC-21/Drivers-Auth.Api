@@ -73,7 +73,11 @@ public class AuthManagementController: ControllerBase
             if (isPasswordValid)
             {
                 var token = GenerateJwtToken(exisistingUser);
-                return Ok
+                return Ok(new LoginRequestResponse()
+                {
+                    Token = token,
+                    Result = true,
+                });
             }
         }
         return BadRequest("Invalid request payload");
