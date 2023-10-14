@@ -80,7 +80,7 @@ public class AuthManagementController: ControllerBase
                 });
             }
         }
-        return BadRequest("Invalid request payload");
+        return BadRequest("Invalid authentication");
     }
 
     private string GenerateJwtToken(IdentityUser user)
